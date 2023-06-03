@@ -2709,7 +2709,7 @@
   dependencies:
     "katex" "^0.16.0"
 
-"react-markdown@^6.0.3":
+"react-markdown@6.0.3":
   "integrity" "sha512-kQbpWiMoBHnj9myLlmZG9T1JdoT/OEyHK7hqM6CqFT14MAkgWiWBUYijLyBmxbntaN6dCDicPcUhWhci1QYodg=="
   "resolved" "https://registry.npmjs.org/react-markdown/-/react-markdown-6.0.3.tgz"
   "version" "6.0.3"

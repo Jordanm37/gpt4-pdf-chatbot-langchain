@@ -6,7 +6,7 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import LoadingDots from '@/components/ui/LoadingDots';
 import { Document } from 'langchain/document';
-import { InlineMath, BlockMath } from 'react-katex';
+import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import {
   Accordion,
@@ -15,10 +15,19 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-// Custom renderers
-const renderers = {
-  inlineMath: ({ value }: { value: string }) => <InlineMath math={value} />,
-  math: ({ value }: { value: string }) => <BlockMath math={value} />,
+const components = {
+  code({ node, inline, className, children, ...props }) {
+    const match = /lang-(\w+)/.exec(className || '');
+    return !inline && match ? (
+      <div
+        dangerouslySetInnerHTML={{ __html: katex.renderToString(children[0]) }}
+      />
+    ) : (
+      <span
+        dangerouslySetInnerHTML={{ __html: katex.renderToString(children[0]) }}
+      />
+    );
+  },
 };
 
 export default function Home() {
@@ -178,7 +187,7 @@ export default function Home() {
                         {icon}
                         <div className={styles.markdownanswer}>
                           <ReactMarkdown
-                            renderers={renderers}
+                            components={components}
                             linkTarget="_blank"
                           >
                             {message.message}
@@ -203,7 +212,7 @@ export default function Home() {
                                   </AccordionTrigger>
                                   <AccordionContent>
                                     <ReactMarkdown
-                                      renderers={renderers}
+                                      components={components}
                                       linkTarget="_blank"
                                     >
                                       {doc.pageContent}
