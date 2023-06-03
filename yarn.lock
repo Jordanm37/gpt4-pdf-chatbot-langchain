@@ -384,6 +384,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-katex@^3.0.0":
+  "integrity" "sha512-AiHHXh71a2M7Z6z1wj6iA23SkiRF9r0neHUdu8zjU/cT3MyLxDefYHbcceKhV/gjDEZgF3YaiNHyPNtoGUjPvg=="
+  "resolved" "https://registry.npmjs.org/@types/react-katex/-/react-katex-3.0.0.tgz"
+  "version" "3.0.0"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^18.0.28", "@types/react@>=16":
   "integrity" "sha512-6Laome31HpetaIUGFWl1VQ3mdSImwxtFZ39rh059a1MNnKGqBpC88J6NJ8n/Is3Qx7CefDGLgf/KhN/sYCf7ag=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.35.tgz"
