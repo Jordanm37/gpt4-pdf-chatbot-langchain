@@ -6,7 +6,7 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import LoadingDots from '@/components/ui/LoadingDots';
 import { Document } from 'langchain/document';
-import katex from 'katex';
+import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import {
   Accordion,
@@ -14,21 +14,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-
-const components = {
-  code({ node, inline, className, children, ...props }) {
-    const match = /lang-(\w+)/.exec(className || '');
-    return !inline && match ? (
-      <div
-        dangerouslySetInnerHTML={{ __html: katex.renderToString(children[0]) }}
-      />
-    ) : (
-      <span
-        dangerouslySetInnerHTML={{ __html: katex.renderToString(children[0]) }}
-      />
-    );
-  },
-};
 
 export default function Home() {
   const [query, setQuery] = useState<string>('');
@@ -57,6 +42,11 @@ export default function Home() {
   useEffect(() => {
     textAreaRef.current?.focus();
   }, []);
+
+  const renderers = {
+    inlineMath: ({ value }: { value: string }) => <InlineMath math={value} />,
+    math: ({ value }: { value: string }) => <BlockMath math={value} />,
+  };
 
   //handle form submission
   async function handleSubmit(e: any) {
@@ -187,7 +177,7 @@ export default function Home() {
                         {icon}
                         <div className={styles.markdownanswer}>
                           <ReactMarkdown
-                            components={components}
+                            components={renderers}
                             linkTarget="_blank"
                           >
                             {message.message}
@@ -211,10 +201,7 @@ export default function Home() {
                                     <h3>Source {index + 1}</h3>
                                   </AccordionTrigger>
                                   <AccordionContent>
-                                    <ReactMarkdown
-                                      components={components}
-                                      linkTarget="_blank"
-                                    >
+                                    <ReactMarkdown linkTarget="_blank">
                                       {doc.pageContent}
                                     </ReactMarkdown>
                                     <p className="mt-2">
@@ -263,20 +250,31 @@ export default function Home() {
                         <LoadingDots color="#000" />
                       </div>
                     ) : (
+                      // Send icon SVG in input field
                       <svg
                         viewBox="0 0 20 20"
                         className={styles.svgicon}
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <path d="M10.625 16.741L3.4 9.516l2.133-2.133 4.091 4.1 5.859-5.875 2.133 2.133L10.625 16.74z"></path>
+                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
                       </svg>
                     )}
                   </button>
                 </form>
               </div>
             </div>
+            {error && (
+              <div className="border border-red-400 rounded-md p-4">
+                <p className="text-red-500">{error}</p>
+              </div>
+            )}
           </main>
         </div>
+        {/* <footer className="m-auto p-4">
+          <a href="https://twitter.com/mayowaoshin">
+            Powered by LangChainAI. 
+          </a>
+        </footer> */}
       </Layout>
     </>
   );
