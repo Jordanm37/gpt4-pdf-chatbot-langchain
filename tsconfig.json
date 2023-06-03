@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "typeRoots": ["./types", "./node_modules/@types"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,

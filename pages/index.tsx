@@ -6,8 +6,6 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import LoadingDots from '@/components/ui/LoadingDots';
 import { Document } from 'langchain/document';
-import { InlineMath, BlockMath } from 'react-katex';
-import 'katex/dist/katex.min.css';
 import {
   Accordion,
   AccordionContent,
@@ -27,7 +25,7 @@ export default function Home() {
   }>({
     messages: [
       {
-        message: 'Hi, what would you like to learn about?',
+        message: 'Hi, what would you like to learn about this document?',
         type: 'apiMessage',
       },
     ],
@@ -42,11 +40,6 @@ export default function Home() {
   useEffect(() => {
     textAreaRef.current?.focus();
   }, []);
-
-  const renderers = {
-    inlineMath: ({ value }: { value: string }) => <InlineMath math={value} />,
-    math: ({ value }: { value: string }) => <BlockMath math={value} />,
-  };
 
   //handle form submission
   async function handleSubmit(e: any) {
@@ -176,10 +169,7 @@ export default function Home() {
                       <div key={`chatMessage-${index}`} className={className}>
                         {icon}
                         <div className={styles.markdownanswer}>
-                          <ReactMarkdown
-                            components={renderers}
-                            linkTarget="_blank"
-                          >
+                          <ReactMarkdown linkTarget="_blank">
                             {message.message}
                           </ReactMarkdown>
                         </div>
@@ -228,13 +218,13 @@ export default function Home() {
                     ref={textAreaRef}
                     autoFocus={false}
                     rows={1}
-                    maxLength={3000}
+                    maxLength={512}
                     id="userInput"
                     name="userInput"
                     placeholder={
                       loading
                         ? 'Waiting for response...'
-                        : 'What is your question?'
+                        : 'What is this legal case about?'
                     }
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
@@ -272,7 +262,7 @@ export default function Home() {
         </div>
         {/* <footer className="m-auto p-4">
           <a href="https://twitter.com/mayowaoshin">
-            Powered by LangChainAI. 
+            Powered by LangChainAI. Demo built by Mayo (Twitter: @mayowaoshin).
           </a>
         </footer> */}
       </Layout>
